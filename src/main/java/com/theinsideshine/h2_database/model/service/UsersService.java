@@ -37,6 +37,9 @@ public class UsersService implements IUsersService {
         return usersAuthDao.getUsersByCards(users);
     }
 
+    @Override
+    public void saveUsers(Users users) {usersDao.save(users);}
+
 
 }
 

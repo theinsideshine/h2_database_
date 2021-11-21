@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IUsersService {
 
+
     public List<Users> getUsers();
 
     public void deleteUsers(Long id);
@@ -13,4 +14,6 @@ public interface IUsersService {
     public void createUsers(Users users);
 
     public Users getUsersByCards(Users users);
+
+    public void saveUsers(Users users);
 }

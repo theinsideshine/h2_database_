@@ -38,7 +38,7 @@ public class UsersController {
 
 
     @CrossOrigin(origins = "http://localhost:8081")
-    @RequestMapping(value="users", method = RequestMethod.GET)
+    @RequestMapping(value="users/list", method = RequestMethod.GET)
     public List<Users> getUsers( @RequestHeader(value="Authorization") String token) {
 
         if (!validarToken(token)) { return null; }
@@ -63,9 +63,33 @@ public class UsersController {
         return ret_val;
     }
 
-    @RequestMapping(value="users/{id}" , method = RequestMethod.DELETE )
-    public void deleteUsers(@PathVariable Long id ) {
+    @CrossOrigin(origins = "http://localhost:8081")
+    @RequestMapping(value="users/delete/{id}" , method = RequestMethod.DELETE )
+    public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
+        JsonObject json = new JsonObject();
+
+        if (!validarToken(token)) { return null; }
         usersService.deleteUsers( id ) ;
+        json.addProperty("result", "OK");
+        return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
+
+    }
+
+    /*
+     Actualiza un registro en al base de datos, termina usando .save idem create
+     la diferencia que aca el id ya existe y es parte users
+     */
+
+    @CrossOrigin(origins = "http://localhost:8081")
+    @RequestMapping(value="users/update" , method = RequestMethod.PUT )
+    public ResponseEntity<String> updateUsers(@RequestHeader(value="Authorization") String token, @RequestBody Users users ) {
+        JsonObject json = new JsonObject();
+
+        if (!validarToken(token)) { return null; }
+        usersService.saveUsers( users );
+        json.addProperty("result", "OK");
+        return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
+
     }
 
 
@@ -81,7 +105,7 @@ public class UsersController {
        Devuelve: un String formateado como JSON.
      */
     @CrossOrigin(origins = "http://localhost:8081")
-    @RequestMapping(value="register" , method = RequestMethod.POST )
+    @RequestMapping(value="users/register" , method = RequestMethod.POST )
     public ResponseEntity<String> createUsers(@RequestBody Users users ) {
         //create Json Object
         JsonObject json = new JsonObject();
@@ -103,7 +127,7 @@ public class UsersController {
 
         json.addProperty("email", users.getEmail());
         json.addProperty("result", "OK");
-        return ( new ResponseEntity<String>(json.toString(), HttpStatus.OK));
+        return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
 
     }
