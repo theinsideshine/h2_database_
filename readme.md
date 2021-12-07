@@ -1,5 +1,5 @@
-La intencion de este back end es poder probar un cliente con toker jwt y Argon2
-para un crud y un acceso a und end point del clima.
+La intencion de este proyecto es poder probar en un cliente la autenticacion con token-jwt y
+un crud en una base de datos H2 con Argon2 ,ademas tener informacion de loggeo por consola.
 
 listados de rutas
 ![](images/index.gif)
