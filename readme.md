@@ -7,3 +7,6 @@ listados de rutas
 Base de datos H2
 ![](images/h2.gif)
 
+Logger por consola
+![](images/logger.gif)
+

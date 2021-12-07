@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
 @RequestMapping(value="api")
 public class UsersController {
+
+    private final static Logger LOGGER = Logger.getLogger("bitacora.rest.userscontroller");
 
     @Autowired
     private ITaskService taskService;
@@ -127,11 +131,19 @@ public class UsersController {
 
         json.addProperty("email", users.getEmail());
         json.addProperty("result", "OK");
+        log_register_ok(users);
         return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
 
     }
 
+    public void log_register_ok(Users users){
+        LOGGER.log(Level.INFO, "REGISTER_OK Usuario:"+ users.getName());
+    }
+
+    public void log_login_fail(Users users){
+        LOGGER.log(Level.INFO, "REGISTER_BAD Usuario:"+ users.getName());
+    }
 
 
 }

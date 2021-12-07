@@ -11,7 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.lang.System.out;
 
@@ -19,6 +20,8 @@ import static java.lang.System.out;
 @RestController
 @RequestMapping(value="api")
 public class AuthController {
+
+    private final static Logger LOGGER = Logger.getLogger("bitacora.rest.authcontroller");
 
     @Autowired
     private IUsersService usersService;
@@ -41,17 +44,26 @@ public class AuthController {
            json.addProperty("token", tokenJwt);
            json.addProperty("name", userlog.getName());
            json.addProperty("result", "OK");
-           return ( new ResponseEntity<String>(json.toString(), HttpStatus.OK));
+           log_login_ok(userlog);
+           return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
        }
 
 
 
         json.addProperty("result", "FAIL");
-
-        return  (new ResponseEntity<String>(json.toString(), HttpStatus.BAD_REQUEST));
+        log_login_fail(userlog);
+        return  (new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
 
     }
 
+
+    public void log_login_ok(Users users){
+        LOGGER.log(Level.INFO, "LOGIN_OK Usuario:"+ users.getName());
+    }
+
+    public void log_login_fail(Users users){
+        LOGGER.log(Level.INFO, "LOGIN_BAD Usuario:"+ users.getName());
+    }
 }
 
