@@ -10,3 +10,6 @@ Base de datos H2
 Logger por consola
 ![](images/logger.gif)
 
+
+video de de Uso:
+[![Video de uso](images/video.gif)](https://youtu.be/GJMszumuEZE)
