@@ -30,7 +30,8 @@ public class AuthController {
     private JWTUtil jwtUtil;
 
 
-    @CrossOrigin(origins = "http://localhost:8081")
+    //  @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="login" , method = RequestMethod.POST )
     public ResponseEntity<String> login(@RequestBody Users users ) {
         //create Json Object

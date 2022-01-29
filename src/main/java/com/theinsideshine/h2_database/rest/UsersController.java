@@ -41,7 +41,8 @@ public class UsersController {
     }
 
 
-    @CrossOrigin(origins = "http://localhost:8081")
+    //  @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="users/list", method = RequestMethod.GET)
     public List<Users> getUsers( @RequestHeader(value="Authorization") String token) {
 
@@ -67,7 +68,8 @@ public class UsersController {
         return ret_val;
     }
 
-    @CrossOrigin(origins = "http://localhost:8081")
+    //  @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="users/delete/{id}" , method = RequestMethod.DELETE )
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
@@ -84,7 +86,8 @@ public class UsersController {
      la diferencia que aca el id ya existe y es parte users
      */
 
-    @CrossOrigin(origins = "http://localhost:8081")
+    //  @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="users/update" , method = RequestMethod.PUT )
     public ResponseEntity<String> updateUsers(@RequestHeader(value="Authorization") String token, @RequestBody Users users ) {
         JsonObject json = new JsonObject();
@@ -108,7 +111,8 @@ public class UsersController {
        Recibe  : un Json.
        Devuelve: un String formateado como JSON.
      */
-    @CrossOrigin(origins = "http://localhost:8081")
+    //  @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="users/register" , method = RequestMethod.POST )
     public ResponseEntity<String> createUsers(@RequestBody Users users ) {
         //create Json Object
