@@ -64,7 +64,12 @@ public class AuthController {
     }
 
     public void log_login_fail(Users users){
-        LOGGER.log(Level.INFO, "LOGIN_BAD Usuario:"+ users.getName());
+        if (users==null){
+            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario: NN");
+        }else {
+            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario:"+ users.getName());
+
+        }
     }
 }
 
