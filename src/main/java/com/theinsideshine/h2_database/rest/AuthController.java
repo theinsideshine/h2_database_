@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import static java.lang.System.out;
 
-
 @RestController
 @RequestMapping(value="api")
 public class AuthController {
@@ -29,47 +28,40 @@ public class AuthController {
     @Autowired
     private JWTUtil jwtUtil;
 
-
-    //  @CrossOrigin(origins = "http://localhost:8081")
     @CrossOrigin(origins = "*")
-    @RequestMapping(value="login" , method = RequestMethod.POST )
-    public ResponseEntity<String> login(@RequestBody Users users ) {
-        //create Json Object
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ResponseEntity<String> login(@RequestBody Users users) {
+
         JsonObject json = new JsonObject();
 
         // put some value pairs into the JSON object .
-        Users userlog = usersService.getUsersByCards( users );
+        Users userlog = usersService.getUsersByCards(users);
 
-       if (userlog != null ){
-           String tokenJwt = jwtUtil.create(String.valueOf(userlog.getId()), userlog.getEmail());
-           json.addProperty("token", tokenJwt);
-           json.addProperty("name", userlog.getName());
-           json.addProperty("result", "OK");
-           log_login_ok(userlog);
-           return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
-
-       }
-
-
-
-        json.addProperty("result", "FAIL");
-        log_login_fail(userlog);
-        return  (new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
-
-    }
-
-
-    public void log_login_ok(Users users){
-        LOGGER.log(Level.INFO, "LOGIN_OK Usuario:"+ users.getName());
-    }
-
-    public void log_login_fail(Users users){
-        if (users==null){
-            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario: NN");
-        }else {
-            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario:"+ users.getName());
+        if (userlog != null) {
+            String tokenJwt = jwtUtil.create(String.valueOf(userlog.getId()), userlog.getEmail());
+            json.addProperty("token", tokenJwt);
+            json.addProperty("name", userlog.getName());
+            json.addProperty("result", "OK");
+            json.addProperty("message", "Login Ok");
+            LOGGER.log(Level.INFO, "LOGIN_OK Usuario:" + userlog.getName());
+            return (new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
         }
+
+        json.addProperty("result", "FAIL");
+        json.addProperty("message", "El usuario no pudo loguearse");
+        if (userlog == null) {
+            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario: NN");
+        } else {
+
+            LOGGER.log(Level.INFO, "LOGIN_BAD Usuario:" + users.getName());
+
+        }
+        return (new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
+
     }
 }
+
+
+
 

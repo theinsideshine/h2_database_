@@ -20,9 +20,13 @@ CREATE TABLE users (
   creation_date date
  );
 
+--! clave de pablo :jajeji
+--! clave de test  :123456
+
  INSERT INTO users ( email, password, name, surname, phone, msj, creation_date) VALUES
- ( 'pablo.tavolaro@gmail.com', 'entrada', 'Pablo Oscar', 'Tavolaro Ortiz', '115575-0681','Somos la vanguardia' , now()),
- ( 'oscardelfino@hotmail.com', 'salida', 'Oscar', 'Delfino', '115565-4678','Somos los delfines', now()),
+ ( 'pablo.tavolaro@gmail.com', '$argon2i$v=19$m=1024,t=1,p=1$Mm95qVQZq+0Lgenl6XLwiQ$3vA2fikrUG32xekRD7Q7iYTVdrzWyutjYMZr6vmoFp4', 'Pablo Oscar', 'Tavolaro Ortiz', '115575-0792','Somos la vanguardia' , now()),
+ ( 'test@gmail.com', '$argon2i$v=19$m=1024,t=1,p=1$ghMHLpB0CXkourZVpLC07g$JLKfZhdIpEkjP++bK+fuUvdN6Pycr7I5BuCQ317Xolo', 'QA', 'Prueba', '5555-4444','Amor por la calidad', now()),
+ ( 'oscardelfino@hotmail.com', 'aVeces', 'Oscar', 'Delfino', '115565-4678','Somos los delfines', now()),
  ( 'jesusvillar@msn.com','steel', 'Rodrigo Jesus', 'Villar', '11405-2999','Somos lo visual', now()),
  ( 'jolea.depuch@gmail.com','pac', 'Alejo Martin', 'DePuch', '114565-4552','Somos vagueros', now());
 

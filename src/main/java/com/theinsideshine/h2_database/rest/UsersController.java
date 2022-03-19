@@ -1,9 +1,7 @@
 package com.theinsideshine.h2_database.rest;
 
 import com.google.gson.JsonObject;
-import com.theinsideshine.h2_database.model.entitys.Task;
 import com.theinsideshine.h2_database.model.entitys.Users;
-import com.theinsideshine.h2_database.model.service.ITaskService;
 import com.theinsideshine.h2_database.model.service.IUsersService;
 import com.theinsideshine.h2_database.util.JWTUtil;
 import de.mkammerer.argon2.Argon2;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 @RestController
 @RequestMapping(value="api")
 public class UsersController {
@@ -27,36 +24,23 @@ public class UsersController {
     private final static Logger LOGGER = Logger.getLogger("bitacora.rest.userscontroller");
 
     @Autowired
-    private ITaskService taskService;
-
-    @Autowired
     private IUsersService usersService;
 
     @Autowired
     private JWTUtil jwtUtil;
 
-    @GetMapping(value="tasks")
-    public List<Task> getTasks() {
-        return taskService.getTask();
-    }
-
-
-    //  @CrossOrigin(origins = "http://localhost:8081")
     @CrossOrigin(origins = "*")
     @RequestMapping(value="users/list", method = RequestMethod.GET)
     public List<Users> getUsers( @RequestHeader(value="Authorization") String token) {
 
-        if (!validarToken(token)) { return null; }
-
+        if (!validarToken(token)) {
+            LOGGER.log(Level.INFO, "ERROR EN TOKEN");
+            return null;
+        }
+        LOGGER.log(Level.INFO, "LIST USERS OK");
         return usersService.getUsers();
     }
 
-    /* sin token
-    @RequestMapping(value="users", method = RequestMethod.GET)
-    public List<Users> getUsers() {
-        return usersService.getUsers();
-    }
-    */
 
    private boolean validarToken(String token) {
        boolean ret_val = false;
@@ -68,16 +52,31 @@ public class UsersController {
         return ret_val;
     }
 
-    //  @CrossOrigin(origins = "http://localhost:8081")
     @CrossOrigin(origins = "*")
     @RequestMapping(value="users/delete/{id}" , method = RequestMethod.DELETE )
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
 
-        if (!validarToken(token)) { return null; }
-        usersService.deleteUsers( id ) ;
-        json.addProperty("result", "OK");
-        return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
+        if (id==1 || id==2 ){ // Evita el borrado de los id de prueba
+            json.addProperty("result", "FAIL");
+            json.addProperty("message", "El Id no pudo borrarse");
+            LOGGER.log(Level.INFO, "EL ID NO PUDO BORRARSE");
+            return ( new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
+
+        }else {
+            if (!validarToken(token)) {
+                json.addProperty("result", "FAIL");
+                json.addProperty("message", "Error en token");
+                LOGGER.log(Level.INFO, "ERROR EN TOKEN");
+                return ( new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
+            }
+
+            usersService.deleteUsers( id ) ;
+            json.addProperty("result", "OK");
+            json.addProperty("message", "El Id se borro");
+            LOGGER.log(Level.INFO, "SE BORRO EL ID:"+id);
+            return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
+        }
 
     }
 
@@ -86,15 +85,21 @@ public class UsersController {
      la diferencia que aca el id ya existe y es parte users
      */
 
-    //  @CrossOrigin(origins = "http://localhost:8081")
     @CrossOrigin(origins = "*")
     @RequestMapping(value="users/update" , method = RequestMethod.PUT )
     public ResponseEntity<String> updateUsers(@RequestHeader(value="Authorization") String token, @RequestBody Users users ) {
         JsonObject json = new JsonObject();
 
-        if (!validarToken(token)) { return null; }
+        if (!validarToken(token)) {
+            json.addProperty("result", "FAIL");
+            json.addProperty("message", "Error en token");
+            LOGGER.log(Level.INFO, "UPDATE_BAD");
+            return ( new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
+        }
         usersService.saveUsers( users );
         json.addProperty("result", "OK");
+        json.addProperty("message", "El Id se actualizo");
+        LOGGER.log(Level.INFO, "UPDATE Usuario:"+ users.getName());
         return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
     }
@@ -111,7 +116,7 @@ public class UsersController {
        Recibe  : un Json.
        Devuelve: un String formateado como JSON.
      */
-    //  @CrossOrigin(origins = "http://localhost:8081")
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="users/register" , method = RequestMethod.POST )
     public ResponseEntity<String> createUsers(@RequestBody Users users ) {
@@ -135,19 +140,17 @@ public class UsersController {
 
         json.addProperty("email", users.getEmail());
         json.addProperty("result", "OK");
-        log_register_ok(users);
+        json.addProperty("message", "El Id se registro");
+        LOGGER.log(Level.INFO, "REGISTER_OK Usuario:"+ users.getName());
         return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
 
 
     }
 
     public void log_register_ok(Users users){
-        LOGGER.log(Level.INFO, "REGISTER_OK Usuario:"+ users.getName());
+
     }
 
-    public void log_login_fail(Users users){
-        LOGGER.log(Level.INFO, "REGISTER_BAD Usuario:"+ users.getName());
-    }
 
 
 }
