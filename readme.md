@@ -20,5 +20,3 @@ postgreSql dataBase
 ![](images/data_base.gif)
 
 
-video de de Usos:
-[![Video de uso](images/video.gif)]()
