@@ -57,7 +57,7 @@ public class UsersController {
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
 
-        if (id==1 || id==2 ){ // Evita el borrado de los id de prueba
+        if (id==5 || id==6 ){ // Evita el borrado de los id de prueba
             json.addProperty("result", "FAIL");
             json.addProperty("message", "El Id no pudo borrarse");
             LOGGER.log(Level.INFO, "EL ID NO PUDO BORRARSE");

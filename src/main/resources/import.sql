@@ -21,7 +21,7 @@ CREATE TABLE users (
  );
 
 --! clave de pablo :jajeji
---! clave de test  :123456
+--! clave de test  :admin
 
  INSERT INTO users ( email, password, name, surname, phone, msj, creation_date) VALUES
  ( 'pablo.tavolaro@gmail.com', '$argon2i$v=19$m=1024,t=1,p=1$Mm95qVQZq+0Lgenl6XLwiQ$3vA2fikrUG32xekRD7Q7iYTVdrzWyutjYMZr6vmoFp4', 'Pablo Oscar', 'Tavolaro Ortiz', '115575-0792','Somos la vanguardia' , now()),

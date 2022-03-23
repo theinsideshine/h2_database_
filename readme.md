@@ -1,13 +1,12 @@
-La intencion de este proyecto es poder probar en un cliente la autenticacion con token-jwt y
-un crud en una base de datos H2 con Argon2 ,ademas tener informacion de loggeo por consola.
+The intention of this project is to be able to test in a client the authentication with token-jwt and
+a crud in a postgrest database with Argon2, in addition to having logging information by console
 
-listados de rutas
+rute list
 ![](images/index.gif)
 
-Base de datos H2
-![](images/h2.gif)
 
-Logger por consola
+
+Logge
 ![](images/logger.gif)
 
 
