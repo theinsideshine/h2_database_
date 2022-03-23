@@ -59,7 +59,7 @@ public class UsersController {
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
 
-        if (!usersService.isDeleteId(id)){ // Evita el borrado de los id de prueba
+        if (!usersService.isIdDelete(id)){ // Evita el borrado de los id de prueba
             json.addProperty("result", "FAIL");
             json.addProperty("message", "El Id no pudo borrarse");
             LOGGER.log(Level.INFO, "EL ID NO PUDO BORRARSE");
@@ -138,17 +138,24 @@ public class UsersController {
         users.setPassword(hash);
 
 */
-        users.setPassword(users.getPassword());
+        // Does not allow duplicate emails.
 
+        if ( usersService.isUsersExist( users)){
+            System.out.println("El usuario existe: "+users.getEmail());
+            json.addProperty("result", "FAIL");
+            json.addProperty("message", "El usuario existe");
+            LOGGER.log(Level.INFO, "REGISTER_BAD Usuario existe:"+ users.getEmail());
+            return ( new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
 
-        usersService.createUsers( users ) ;
-        System.out.println("Se creo el usuario "+users.getEmail());
-        json.addProperty("email", users.getEmail());
-        json.addProperty("result", "OK");
-        json.addProperty("message", "El Id se registro");
-        LOGGER.log(Level.INFO, "REGISTER_OK Usuario:"+ users.getName());
-        return ( new ResponseEntity<>(json.toString(), HttpStatus.OK));
-
+        }else {
+            usersService.createUsers(users);
+            System.out.println("Se creo el usuario " + users.getEmail());
+            json.addProperty("email", users.getEmail());
+            json.addProperty("result", "OK");
+            json.addProperty("message", "El Id se registro");
+            LOGGER.log(Level.INFO, "REGISTER_OK Usuario:" + users.getEmail());
+            return (new ResponseEntity<>(json.toString(), HttpStatus.OK));
+        }
 
     }
 

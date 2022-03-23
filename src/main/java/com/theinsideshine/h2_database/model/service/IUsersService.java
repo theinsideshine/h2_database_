@@ -18,7 +18,10 @@ public interface IUsersService {
 
      void saveUsers(Users users);
 
-     boolean isDeleteId(Long Id);
+
+     boolean isUsersExist( Users user);
+
+     boolean isIdDelete( Long id);
 
 
 }

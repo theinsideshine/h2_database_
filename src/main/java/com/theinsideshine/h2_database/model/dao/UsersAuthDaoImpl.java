@@ -41,4 +41,38 @@ public class UsersAuthDaoImpl implements IUsersAuthDao {
         }
         return null;
     }
+
+    @Override
+    public boolean isUserExist(Users users) {
+
+        String query = "FROM Users WHERE email = :email";
+        List<Users> list= entityManager.createQuery(query)
+                .setParameter("email", users.getEmail())
+                .getResultList();
+
+        // Null pointer exception.
+        if (list.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isIdDelete(Long id) {
+        String query = "FROM Users WHERE id = :id";
+        List<Users> list= entityManager.createQuery(query)
+                .setParameter("id", id)
+                .getResultList();
+
+        // Null pointer exception.
+        if (list.isEmpty()) {
+            return false;
+        }
+        if (list.get(0).getEmail().equals("pablo.tavolaro@gmail.com") ||
+                list.get(0).getEmail().equals("test@gmail.com")
+        ){
+            return false;
+        }
+        return true;
+    }
 }
