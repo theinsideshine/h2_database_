@@ -6,6 +6,8 @@ import com.theinsideshine.h2_database.model.service.IUsersService;
 import com.theinsideshine.h2_database.util.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import net.bytebuddy.dynamic.DynamicType;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +59,8 @@ public class UsersController {
     @RequestMapping(value="users/delete/{id}" , method = RequestMethod.DELETE )
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
+
+
 
         if (id==5 || id==6 ){ // Evita el borrado de los id de prueba
             json.addProperty("result", "FAIL");
@@ -129,18 +134,17 @@ public class UsersController {
         // Se guarda en Bd el password encriptado.
 
         //https://crypto.stackexchange.com/questions/72416/when-to-use-argon2i-vs-argon2d-vs-argon2id
-
+/*
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
-        String hash = argon2.hash(1, 64, 1, users.getPassword());
+        String hash = argon2.hash(1, 1024, 1, users.getPassword());
         users.setPassword(hash);
-
+        se saco para deploy en heroku
+*/
         users.setPassword(users.getPassword());
 
 
         usersService.createUsers( users ) ;
         System.out.println("Se creo el usuario "+users.getEmail());
-
-        json.addProperty("token", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2zV9.Ddi5sGdmORU_EesE3tsr-48L0");
         json.addProperty("email", users.getEmail());
         json.addProperty("result", "OK");
         json.addProperty("message", "El Id se registro");

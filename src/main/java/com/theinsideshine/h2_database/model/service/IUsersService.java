@@ -3,6 +3,7 @@ package com.theinsideshine.h2_database.model.service;
 import com.theinsideshine.h2_database.model.entitys.Users;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUsersService {
 
@@ -16,4 +17,6 @@ public interface IUsersService {
     public Users getUsersByCards(Users users);
 
     public void saveUsers(Users users);
+
+
 }
