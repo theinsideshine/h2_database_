@@ -40,6 +40,16 @@ public class UsersService implements IUsersService {
     @Override
     public void saveUsers(Users users) {usersDao.save(users);}
 
+    @Override
+    public boolean isDeleteId(Long id) {
+        boolean ret_val =true;
+
+        if (id==5 || id==6 ) {
+            ret_val = false;
+        }
+        return ret_val;
+
+    }
 
 
 }

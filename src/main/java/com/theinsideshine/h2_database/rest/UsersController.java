@@ -32,21 +32,8 @@ public class UsersController {
     @Autowired
     private JWTUtil jwtUtil;
 
-    @CrossOrigin(origins = "*")
-    @RequestMapping(value="users/list", method = RequestMethod.GET)
-    public List<Users> getUsers( @RequestHeader(value="Authorization") String token) {
-
-        if (!validarToken(token)) {
-            LOGGER.log(Level.INFO, "ERROR EN TOKEN");
-            return null;
-        }
-        LOGGER.log(Level.INFO, "LIST USERS OK");
-        return usersService.getUsers();
-    }
-
-
-   private boolean validarToken(String token) {
-       boolean ret_val = false;
+    private boolean tokenValidate(String token) {
+        boolean ret_val = false;
         String userId = jwtUtil.getKey(token);
         if ( userId != null ){
             ret_val =  true;
@@ -56,20 +43,30 @@ public class UsersController {
     }
 
     @CrossOrigin(origins = "*")
+    @RequestMapping(value="users/list", method = RequestMethod.GET)
+    public List<Users> getUsers( @RequestHeader(value="Authorization") String token) {
+
+        if (!tokenValidate(token)) {
+            LOGGER.log(Level.INFO, "ERROR EN TOKEN");
+            return null;
+        }
+        LOGGER.log(Level.INFO, "LIST USERS OK");
+        return usersService.getUsers();
+    }
+
+    @CrossOrigin(origins = "*")
     @RequestMapping(value="users/delete/{id}" , method = RequestMethod.DELETE )
     public ResponseEntity<String> deleteUsers(@RequestHeader(value="Authorization") String token, @PathVariable Long id ) {
         JsonObject json = new JsonObject();
 
-
-
-        if (id==5 || id==6 ){ // Evita el borrado de los id de prueba
+        if (!usersService.isDeleteId(id)){ // Evita el borrado de los id de prueba
             json.addProperty("result", "FAIL");
             json.addProperty("message", "El Id no pudo borrarse");
             LOGGER.log(Level.INFO, "EL ID NO PUDO BORRARSE");
             return ( new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST));
 
         }else {
-            if (!validarToken(token)) {
+            if (!tokenValidate(token)) {
                 json.addProperty("result", "FAIL");
                 json.addProperty("message", "Error en token");
                 LOGGER.log(Level.INFO, "ERROR EN TOKEN");
@@ -86,8 +83,8 @@ public class UsersController {
     }
 
     /*
-     Actualiza un registro en al base de datos, termina usando .save idem create
-     la diferencia que aca el id ya existe y es parte users
+        Update a record in the database, finish using .save idem create
+       the difference here is that the id already exists and is part of the users
      */
 
     @CrossOrigin(origins = "*")
@@ -95,7 +92,7 @@ public class UsersController {
     public ResponseEntity<String> updateUsers(@RequestHeader(value="Authorization") String token, @RequestBody Users users ) {
         JsonObject json = new JsonObject();
 
-        if (!validarToken(token)) {
+        if (!tokenValidate(token)) {
             json.addProperty("result", "FAIL");
             json.addProperty("message", "Error en token");
             LOGGER.log(Level.INFO, "UPDATE_BAD");
@@ -111,34 +108,35 @@ public class UsersController {
 
 
     /*
-     Da de alta en la base de datos un usuario, encripta la password con argon2,
-     el cliente envia en formato JSON url.localhost:8080/api/users
+     Register a user in the database, encrypt the password with argon2 if it is not in heroku
      Json
      {
      "email": "zoe.tavolaro@gmail.com",
       "password":"123456"
       }
-       Recibe  : un Json.
-       Devuelve: un String formateado como JSON.
+
      */
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value="users/register" , method = RequestMethod.POST )
     public ResponseEntity<String> createUsers(@RequestBody Users users ) {
-        //create Json Object
+        // Create Json Object
         JsonObject json = new JsonObject();
 
-        // Se toma hora actual para el alta de id.
+
         Date date = new Date();
         users.setCreationDate(date);
         // Se guarda en Bd el password encriptado.
 
         //https://crypto.stackexchange.com/questions/72416/when-to-use-argon2i-vs-argon2d-vs-argon2id
 /*
+        It was taken out to deploy on heroku, it crashed due to lack of memory
+
+        The encrypted password is saved in Bd.
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
         String hash = argon2.hash(1, 1024, 1, users.getPassword());
         users.setPassword(hash);
-        se saco para deploy en heroku
+
 */
         users.setPassword(users.getPassword());
 

@@ -34,7 +34,7 @@ public class AuthController {
 
         JsonObject json = new JsonObject();
 
-        // put some value pairs into the JSON object .
+        // Put some value pairs into the JSON object .
         Users userlog = usersService.getUsersByCards(users);
 
         if (userlog != null) {

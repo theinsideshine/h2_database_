@@ -22,22 +22,22 @@ public class UsersAuthDaoImpl implements IUsersAuthDao {
     public Users getUsersByCards(Users users) {
 
         String query = "FROM Users WHERE email = :email";
-        List<Users> lista = entityManager.createQuery(query)
+        List<Users> list= entityManager.createQuery(query)
                 .setParameter("email", users.getEmail())
                 .getResultList();
 
         // Null pointer exception.
-        if (lista.isEmpty()) {
+        if (list.isEmpty()) {
             return null;
         }
 
-        String passwordHashed = lista.get(0).getPassword();
+        String passwordHashed = list.get(0).getPassword();
 
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
         if (argon2.verify(passwordHashed, users.getPassword())) {
-            return lista.get(0);
-        }else if (passwordHashed.equals(users.getPassword())){
-            return lista.get(0);
+            return list.get(0);
+        }else if (passwordHashed.equals(users.getPassword())){ //Support without argon
+            return list.get(0);
         }
         return null;
     }

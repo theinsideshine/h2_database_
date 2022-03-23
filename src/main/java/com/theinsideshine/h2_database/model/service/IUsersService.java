@@ -8,15 +8,17 @@ import java.util.Optional;
 public interface IUsersService {
 
 
-    public List<Users> getUsers();
+     List<Users> getUsers();
 
-    public void deleteUsers(Long id);
+     void deleteUsers(Long id);
 
-    public void createUsers(Users users);
+     void createUsers(Users users);
 
-    public Users getUsersByCards(Users users);
+     Users getUsersByCards(Users users);
 
-    public void saveUsers(Users users);
+     void saveUsers(Users users);
+
+     boolean isDeleteId(Long Id);
 
 
 }

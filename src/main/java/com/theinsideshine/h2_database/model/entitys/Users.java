@@ -9,9 +9,7 @@ import java.util.Date;
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1605893026818230877L;
-    /**
-     * Modelo para loggin de usuario
-     */
+
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
