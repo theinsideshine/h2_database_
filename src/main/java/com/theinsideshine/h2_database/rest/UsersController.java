@@ -129,10 +129,13 @@ public class UsersController {
         // Se guarda en Bd el password encriptado.
 
         //https://crypto.stackexchange.com/questions/72416/when-to-use-argon2i-vs-argon2d-vs-argon2id
-
+        /*
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
         String hash = argon2.hash(1, 1024, 1, users.getPassword());
         users.setPassword(hash);
+         */
+        users.setPassword(users.getPassword());
+
 
         usersService.createUsers( users ) ;
         System.out.println("Se creo el usuario "+users.getEmail());

@@ -36,6 +36,8 @@ public class UsersAuthDaoImpl implements IUsersAuthDao {
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2i);
         if (argon2.verify(passwordHashed, users.getPassword())) {
             return lista.get(0);
+        }else if (passwordHashed.equals(users.getPassword())){
+            return lista.get(0);
         }
         return null;
     }
