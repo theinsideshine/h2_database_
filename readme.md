@@ -21,4 +21,4 @@ postgreSql dataBase
 
 
 video de de Uso:
-[![Video de uso](images/video.gif)](https://youtu.be/GJMszumuEZE)
+[![Video de uso](images/video.gif)]()
