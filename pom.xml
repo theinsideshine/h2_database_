@@ -13,7 +13,7 @@
 	<artifactId>h2_database</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>h2_database</name>
-	<packaging>war</packaging>
+
 	<description>react-weather-crud</description>
 	<properties>
 		<java.version>1.8</java.version>
