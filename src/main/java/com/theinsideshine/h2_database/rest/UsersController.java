@@ -137,7 +137,7 @@ public class UsersController {
         usersService.createUsers( users ) ;
         System.out.println("Se creo el usuario "+users.getEmail());
 
-
+        json.addProperty("token", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2zV9.Ddi5sGdmORU_EesE3tsr-48L0");
         json.addProperty("email", users.getEmail());
         json.addProperty("result", "OK");
         json.addProperty("message", "El Id se registro");
